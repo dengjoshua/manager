@@ -13,7 +13,7 @@ import {
 import { useLocation, NavLink } from "react-router-dom";
 import Logout from "../components/logout";
 
-const Sidebar = () => {
+const Sidebar = ({ user }) => {
   const projectId = localStorage.getItem("currentProjectId");
 
   const menuItems = [
@@ -43,11 +43,10 @@ const Sidebar = () => {
           <FaUserCircle size={28} className="text-orange-700 mr-3" />
           <section>
             <h2 className="text-sm flex items-center font-bold-400">
-              Deng Joshua <FaAngleDown className="ml-1" />
+              {user.username}
+              <FaAngleDown className="ml-1" />
             </h2>
-            <p className="text-xs font-light text-gray-600">
-              dengjoshua18@gmail.com
-            </p>
+            <p className="text-xs font-light text-gray-600">{user.email}</p>
           </section>
         </div>
       </div>

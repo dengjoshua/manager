@@ -14,6 +14,7 @@ const cookies = new Cookies();
 
 function Container() {
   const [projects, setProjects] = useState([]);
+  const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchAllProjects = async () => {
@@ -34,14 +35,29 @@ function Container() {
     }
   };
 
+  const fetchUserDetails = async () => {
+    const cookie = cookies.get("auth_token");
+    try {
+      const response = await axios.get(`${BASE_URL}/get_user_details`, {
+        headers: {
+          Authorization: `Bearer ${cookie}`,
+        },
+      });
+      setUser(response.data);
+    } catch (err) {
+      console.error("Failed to fetch user details:", err);
+    }
+  };
+
   useEffect(() => {
     const source = axios.CancelToken.source();
 
-    const loadProjects = () => {
+    const loadData = () => {
       fetchAllProjects();
+      fetchUserDetails();
     };
 
-    loadProjects();
+    loadData();
 
     return () => {
       source.cancel("Component unmounted, request cancelled");
@@ -49,32 +65,33 @@ function Container() {
   }, []);
 
   return (
-    <div className="flex">
-      <Sidebar />
+    <React.Fragment>
       {isLoading ? (
         <div>
           <h1>App loading</h1>
         </div>
       ) : (
-        <div className="ml-60 flex-1 flex h-screen">
-          <Routes>
-            <Route path="/dashboard" element={<DashBoard />} />
-            <Route
-              path="/project_overview/:projectId"
-              element={<MainComponent />}
-            />
-            <Route
-              path="/task_list"
-              element={<TaskList projects={projects} />}
-            />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/calendar" element={<Calendar />} />
-          </Routes>
+        <div className="flex">
+          <Sidebar user={user} />
+          <div className="ml-60 h-screen">
+            <Routes>
+              <Route path="/dashboard" element={<DashBoard />} />
+              <Route
+                path="/project_overview/:projectId"
+                element={<MainComponent />}
+              />
+              <Route
+                path="/task_list"
+                element={<TaskList projects={projects} />}
+              />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/calendar" element={<Calendar />} />
+            </Routes>
+          </div>
+          <Outlet />
         </div>
       )}
-
-      <Outlet />
-    </div>
+    </React.Fragment>
   );
 }
 
