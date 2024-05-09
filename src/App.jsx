@@ -6,12 +6,10 @@ import SignUp from "./components/Signup";
 import { ProjectProvider } from "./context/ProjectContext";
 
 import Cookies from "universal-cookie";
-import { jwtDecode } from "jwt-decode";
-
 const cookies = new Cookies();
 
-// const data = jwtDecode(cookies.get("auth_token")) ;
-// console.log(data);
+const isAuthenticated = () => !!cookies.get("auth_token");
+
 function App() {
   const user = true;
   return (

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { format } from "date-fns";
 import { BASE_URL } from "../services/api";
-import { Link } from "react-router-dom";
-import { useProject } from "../context/ProjectContext";
-import { Button } from "./ui/button";
+import { FaPlusCircle } from "react-icons/fa";
 
 import Cookies from "universal-cookie";
 import axios from "axios";
@@ -25,8 +22,6 @@ const Dashboard = () => {
   const [priority, setPriority] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { setProjectId } = useProject();
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -40,8 +35,6 @@ const Dashboard = () => {
     const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : "";
 
     const cookie = cookies.get("auth_token");
-
-    setIsModalOpen(false);
 
     await axios
       .post(
@@ -59,8 +52,8 @@ const Dashboard = () => {
           },
         }
       )
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
+        fetchAllProjects();
       })
       .catch((err) => console.log(err));
 
@@ -69,6 +62,7 @@ const Dashboard = () => {
     setStartDate(null);
     setEndDate(null);
     setPriority("");
+    setIsModalOpen(false);
   };
 
   const fetchAllProjects = async () => {
@@ -96,20 +90,27 @@ const Dashboard = () => {
         <p>Loading projects...</p>
       ) : (
         <div>
-          <button
+          <p>
+            {projects.length == 0
+              ? "You current have no ongoing projects."
+              : `You currently have ${projects.length} ongoing projects.`}
+          </p>
+          <div
+            className="bg-white h-40 m-2 w-32 p-2 hover:pointer justify-center flex flex-col"
             onClick={() => setIsModalOpen(true)}
-            className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            Create Project
-          </button>
+            <FaPlusCircle size={24} color="orange" className="mx-auto" />
+            <p className="mx-auto">Create Project</p>
+          </div>
           <div className="flex gap-4 ">
-            {projects.map((project, index) => (
-              <ProjectCard
-                project={project}
-                key={index}
-                handleProjectSelect={handleProjectSelect}
-              />
-            ))}
+            {projects &&
+              projects.map((project, index) => (
+                <ProjectCard
+                  project={project}
+                  key={index}
+                  handleProjectSelect={handleProjectSelect}
+                />
+              ))}
           </div>
         </div>
       )}

@@ -9,6 +9,7 @@ import Calendar from "./Calendar";
 import Cookies from "universal-cookie";
 import { BASE_URL } from "../services/api";
 import axios from "axios";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 const cookies = new Cookies();
 
@@ -75,7 +76,14 @@ function Container() {
           <Sidebar user={user} />
           <div className="ml-60 h-screen">
             <Routes>
-              <Route path="/dashboard" element={<DashBoard />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <DashBoard />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/project_overview/:projectId"
                 element={<MainComponent />}
@@ -85,7 +93,10 @@ function Container() {
                 element={<TaskList projects={projects} />}
               />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route
+                path="/calendar"
+                element={<Calendar projects={projects} />}
+              />
             </Routes>
           </div>
           <Outlet />

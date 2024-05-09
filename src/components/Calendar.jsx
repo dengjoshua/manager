@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   format,
   parseISO,
@@ -8,107 +8,80 @@ import {
   endOfMonth,
   addDays,
 } from "date-fns";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { projects } from "../assets/database";
 
-const todos = projects[0].tasks;
+function Calendar({ projects }) {
+  const [days, setDays] = useState([]);
 
-const todosByDate = (todos) => {
-  const byDate = {};
-  todos.forEach((todo) => {
-    const dayKey = format(parseISO(todo.date), "yyyy-MM-dd");
-    if (!byDate[dayKey]) {
-      byDate[dayKey] = [];
+  useEffect(() => {
+    if (projects) {
+      const allTasks = aggregateTasks(projects);
+      setDays(generateMonthDays(allTasks));
     }
-    byDate[dayKey].push(todo);
-  });
-  return byDate;
-};
+  }, [projects]);
 
-const generateMonthDays = (todos) => {
-  const today = new Date();
-  const startDay = startOfWeek(startOfMonth(today));
-  const endDay = endOfWeek(endOfMonth(today));
-  let day = startDay;
-  const dayMap = todosByDate(todos);
-  const days = [];
-  while (day <= endDay) {
-    const dayKey = format(day, "yyyy-MM-dd");
-    days.push({
-      id: dayKey,
-      name: format(day, "eee d"),
-      todos: dayMap[dayKey] || [],
-    });
-    day = addDays(day, 1);
-  }
-  return days;
-};
-
-function Calendar() {
-  const [days, setDays] = useState(generateMonthDays(todos));
-
-  const onDragEnd = (result) => {
-    const { source, destination } = result;
-    if (!destination) return;
-
-    const sourceIndex = days.findIndex((day) => day.id === source.droppableId);
-    const destinationIndex = days.findIndex(
-      (day) => day.id === destination.droppableId
+  const aggregateTasks = (projects) => {
+    let allTasks = [];
+    projects.forEach((project) =>
+      project.tasks.forEach((task) => {
+        allTasks.push(task);
+      })
     );
+    console.log(allTasks.length);
+    return allTasks;
+  };
 
-    if (sourceIndex === -1 || destinationIndex === -1) return;
+  const tasksByDate = (tasks) => {
+    const byDate = {};
+    tasks.forEach((task) => {
+      const parsedDate = parseISO(task.date);
+      if (!isNaN(parsedDate)) {
+        const dayKey = format(parsedDate, "yyyy-MM-dd");
+        if (!byDate[dayKey]) {
+          byDate[dayKey] = [];
+        }
+        byDate[dayKey].push(task);
+      } else {
+        console.error("Invalid date:", task.date);
+      }
+    });
+    return byDate;
+  };
 
-    const sourceTasks = Array.from(days[sourceIndex].todos);
-    const destTasks = Array.from(days[destinationIndex].todos);
-    const [removed] = sourceTasks.splice(source.index, 1);
-    destTasks.splice(destination.index, 0, removed);
-
-    const newDays = Array.from(days);
-    newDays[sourceIndex] = { ...days[sourceIndex], todos: sourceTasks };
-    newDays[destinationIndex] = { ...days[destinationIndex], todos: destTasks };
-
-    setDays(newDays);
+  const generateMonthDays = (tasks) => {
+    const today = new Date();
+    const startDay = startOfWeek(startOfMonth(today));
+    const endDay = endOfWeek(endOfMonth(today));
+    let day = startDay;
+    const dayMap = tasksByDate(tasks);
+    const monthDays = [];
+    while (day <= endDay) {
+      const dayKey = format(day, "yyyy-MM-dd");
+      monthDays.push({
+        id: dayKey,
+        name: format(day, "eee d"),
+        tasks: dayMap[dayKey] || [],
+      });
+      day = addDays(day, 1);
+    }
+    return monthDays;
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="calendar grid grid-cols-7 gap-1 w-full">
-        {days.map((day) => (
-          <Droppable key={day.id} droppableId={day.id}>
-            {(provided) => (
-              <div
-                className="day bg-blue-100 border border-gray-300 p-2 flex flex-col"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                <span className="date text-sm font-bold">{day.name}</span>
-                {day.todos.map((todo, index) => (
-                  <Draggable
-                    key={todo.task_id}
-                    draggableId={todo.task_id}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        draggable
-                        className="todo bg-white p-1 mt-1 rounded shadow"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <div>{format(parseISO(todo.date), "p")}</div>
-                        <div>{todo.name}</div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        ))}
-      </div>
-    </DragDropContext>
+    <div className="calendar bg-white grid grid-cols-7 gap-1 w-full">
+      {days.map((day) => (
+        <div
+          key={day.id}
+          className="day bg-gray-100 border border-gray-300 p-2 flex flex-col w-auto h-56"
+        >
+          <span className="date text-sm font-bold">{day.name}</span>
+          {day.tasks.map((task, index) => (
+            <div key={task.task_id} className="todo p-1 mt-1">
+              <div>{task.name}</div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
   );
 }
 

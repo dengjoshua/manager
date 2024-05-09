@@ -12,7 +12,6 @@ function ProjectDetails({ project }) {
     name: "",
     description: "",
     date: "",
-    time: "",
     tag: { name: "", color: "" },
   });
 
@@ -44,7 +43,6 @@ function ProjectDetails({ project }) {
           name: newTask.name,
           date: newTask.date,
           description: newTask.description,
-          time: newTask.time,
           tag: newTask.tag,
         },
         {
@@ -134,12 +132,6 @@ function ProjectDetails({ project }) {
                 value={newTask.date}
                 onChange={(e) => handleInputChange(e, "date")}
                 className="w-1/2 mr-2 p-2 border rounded"
-              />
-              <input
-                type="time"
-                value={newTask.time}
-                onChange={(e) => handleInputChange(e, "time")}
-                className="w-1/2 p-2 border rounded"
               />
             </div>
             <div className="flex justify-between mb-3">

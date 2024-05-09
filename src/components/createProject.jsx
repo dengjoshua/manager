@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { Textarea } from "./ui/textarea";
 import {
   Select,
   SelectContent,
@@ -56,11 +57,11 @@ export function ProjectForm({
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">Description</Label>
-              <Input
+              <Textarea
+                placeholder="Description of project."
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description of your project"
               />
             </div>
             <div className="flex flex-col w-1/2 space-y-1.5">

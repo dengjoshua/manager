@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { BASE_URL } from "../services/api";
+import { GoogleLogin } from "@react-oauth/google";
 
 const cookies = new Cookies();
 
@@ -38,6 +39,22 @@ const SignUp = () => {
       .catch((err) => setError(err.data));
 
     setFormValues(initialValues);
+  };
+
+  const handleGoogleLogin = async (token) => {
+    await axios
+      .post(`${BASE_URL}/signup/google`, { token })
+      .then((res) => {
+        const data = res.data;
+        if (data["status_code"] === 200) {
+          cookies.set("auth_token", data["auth_token"]);
+          localStorage.clear();
+          window.location = "/dashboard";
+        } else {
+          console.log("Email already in use");
+        }
+      })
+      .catch((err) => console.log(err.response.data));
   };
 
   return (
@@ -93,6 +110,14 @@ const SignUp = () => {
               sign in?
             </Link>
           </p>
+          <GoogleLogin
+            onSuccess={(credentialResponse) =>
+              handleGoogleLogin(credentialResponse.credential)
+            }
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
         </form>
       </div>
     </div>

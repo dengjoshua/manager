@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { BASE_URL } from "../services/api";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const cookies = new Cookies();
 
@@ -17,13 +19,29 @@ const Login = () => {
       .post(`${BASE_URL}/auth_token`, { email, password })
       .then((res) => {
         const data = res.data;
-        console.log(data);
         if (data["status_code"] === 200) {
           cookies.set("auth_token", data["auth_token"]);
+          localStorage.clear();
           window.location = "/dashboard";
         } else {
           setError(data.detail);
           setPassword("");
+        }
+      })
+      .catch((err) => console.log(err.response.data));
+  };
+
+  const handleGoogleLogin = async (token) => {
+    await axios
+      .post(`${BASE_URL}/signup/google`, { token })
+      .then((res) => {
+        const data = res.data;
+        if (data["status_code"] === 200) {
+          cookies.set("auth_token", data["auth_token"]);
+          localStorage.clear();
+          window.location = "/dashboard";
+        } else {
+          console.log("Email already in use");
         }
       })
       .catch((err) => console.log(err.response.data));
@@ -72,6 +90,7 @@ const Login = () => {
           >
             Login
           </button>
+
           <p className="my-3 text-sm my-5 sm:text-base">
             Don't have an account,{" "}
             <Link
@@ -81,6 +100,15 @@ const Login = () => {
               sign up?
             </Link>
           </p>
+          <p>OR</p>
+          <GoogleLogin
+            onSuccess={(credentialResponse) =>
+              handleGoogleLogin(credentialResponse.credential)
+            }
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
         </form>
       </div>
     </div>

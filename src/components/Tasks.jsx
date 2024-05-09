@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react";
+import Cookies from "universal-cookie";
+import { BASE_URL } from "../services/api";
+import axios from "axios";
+
+const cookies = new Cookies();
 
 import Task from "./Task";
 const Tasks = ({ project }) => {
@@ -11,6 +16,18 @@ const Tasks = ({ project }) => {
     setDescription("");
     setTitle("");
     setOpenModal(false);
+  };
+
+  const handleDeleteTask = async (task_id, projectId) => {
+    const cookie = cookies.get("auth_token");
+
+    await axios
+      .delete(`${BASE_URL}/delete_task/${projectId}/${task_id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie}`,
+        },
+      })
+      .then((res) => console.log(res.data));
   };
 
   return (
@@ -36,7 +53,8 @@ const Tasks = ({ project }) => {
                     key={task.task_id}
                     task={task}
                     editTask={() => console.log("works2")}
-                    deleteTask={() => console.log("works3")}
+                    deleteTask={handleDeleteTask}
+                    projectId={project.project_id}
                   />
                 ))}
               </ul>
