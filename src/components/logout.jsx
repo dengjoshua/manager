@@ -10,8 +10,11 @@ function Logout() {
   };
 
   return (
-    <div>
-      <button onClick={handleLogout} className="bg-slate-300">
+    <div className="w-full flex h-full">
+      <button
+        onClick={handleLogout}
+        className="bg-red-400 p-2 rounded mb-2 mx-auto"
+      >
         Logout
       </button>
     </div>

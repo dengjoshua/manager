@@ -10,16 +10,18 @@ function ProjectCard({ project, handleProjectSelect }) {
 
   return (
     <div className="card bg-white p-4 rounded shadow">
-      <h3 className="text-xl font-bold">{project.name}</h3>
-      <p>Priority: {project.priority}</p>
-      <p>Completed: {project.finish ? "Yes" : "No"}</p>
-      <p>Started: {formatDate(project.date_start)}</p>
-      <p>Ends: {formatDate(project.date_end)}</p>
-      <Button>
-        {" "}
+      <div className="flex flex-col">
+        <h3 className="text-xl font-bold">{project.name}</h3>
+        <span>Priority: {project.priority}</span>
+        <span>Completed: {project.finish ? "Yes" : "No"}</span>
+        <span>Started: {formatDate(project.date_start)}</span>
+        <span>Ends: {formatDate(project.date_end)}</span>
+      </div>
+
+      <Button className="bg-orange-400 hover:bg-orange-300">
         <Link
           to={`/project_overview/${project.project_id}`}
-          className="text-blue-500 hover:text-blue-600"
+          className="text-white hover:bg-orange-300"
           onClick={() => handleProjectSelect(project.project_id)}
         >
           View Details

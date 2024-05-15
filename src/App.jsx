@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./components/LoginScreen";
+import Login from "./components/Auth/Login";
 import Container from "./components/Container";
-import SignUp from "./components/Signup";
+import SignUp from "./components/Auth/Signup";
 import { ProjectProvider } from "./context/ProjectContext";
 
 import Cookies from "universal-cookie";

@@ -7,7 +7,7 @@ const Banner = ({ project }) => {
     <div className=" flex h-32 p-4 items-end bg-orange-400 text-white justify-between align-bottom">
       <div className="text-center">
         <p className="text-sm text-slate-200 py-2 flex">
-          Projects / <p className="pl-1 text-white">{project.name}</p>
+          Projects / <span className="pl-1 text-white">{project.name}</span>
         </p>
         <h1 className="flex">
           <p className="text-xl">{project.name}</p>

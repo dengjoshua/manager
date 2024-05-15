@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
-import { BASE_URL } from "../services/api";
+import { BASE_URL } from "../../services/api";
 import axios from "axios";
 
 const cookies = new Cookies();
@@ -10,7 +10,6 @@ const Tasks = ({ project }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [modalOpen, setOpenModal] = useState(false);
-  const tasks = project.tasks;
 
   const closeModal = () => {
     setDescription("");
@@ -33,9 +32,11 @@ const Tasks = ({ project }) => {
   return (
     <React.Fragment>
       {!project ? (
-        <div className="flex items-center justify-center h-screen">
-          <div className="w-16 h-16 border-b-2 border-gray-900 rounded-full animate-spin"></div>
-          <span className="ml-2">Loading Tasks....</span>
+        <div className="flex items-center w-full justify-center h-screen">
+          <span className="ml-2">
+            You currently haven't selected a project. Select one to view the
+            tasks in detail.
+          </span>
         </div>
       ) : (
         <section className="bg-gray-100 w-full h-max bg-cover bg-center">
@@ -44,11 +45,11 @@ const Tasks = ({ project }) => {
               {project.name}
             </h1>
             <p className="text-base font-light md:text-lg mb-10">
-              You currently have {tasks.length} tasks in {project.name}.
+              You currently have tasks in {project.name}.
             </p>
             <div>
               <ul className="w-full">
-                {tasks.map((task) => (
+                {project.tasks.map((task) => (
                   <Task
                     key={task.task_id}
                     task={task}

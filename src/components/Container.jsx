@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import MainComponent from "./mainComponent";
 import Sidebar from "./sideBar";
-import { Routes, Route, Outlet } from "react-router-dom";
-import TaskList from "./TaskList";
+import { Routes, Route, Outlet, redirect } from "react-router-dom";
+import TaskList from "./Tasks/TaskList";
 import Settings from "./Settings";
 import DashBoard from "./DashBoard";
-import Calendar from "./Calendar";
+import Calendar from "./Calendar/Calendar";
 import Cookies from "universal-cookie";
 import { BASE_URL } from "../services/api";
 import axios from "axios";
-import { ProtectedRoute } from "./ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 const cookies = new Cookies();
+
+const currentProjectId = localStorage.getItem("currentProjectId");
 
 function Container() {
   const [projects, setProjects] = useState([]);
@@ -74,29 +76,24 @@ function Container() {
       ) : (
         <div className="flex">
           <Sidebar user={user} />
-          <div className="ml-60 h-screen">
+          <div className="ml-60 w-full h-screen">
             <Routes>
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashBoard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/project_overview/:projectId"
-                element={<MainComponent />}
-              />
-              <Route
-                path="/task_list"
-                element={<TaskList projects={projects} />}
-              />
-              <Route path="/settings" element={<Settings />} />
-              <Route
-                path="/calendar"
-                element={<Calendar projects={projects} />}
-              />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<DashBoard />} />
+                <Route
+                  path="/project_overview/:projectId"
+                  element={<MainComponent />}
+                />
+                <Route
+                  path="/task_list"
+                  element={<TaskList projects={projects} />}
+                />
+                <Route path="/settings" element={<Settings />} />
+                <Route
+                  path="/calendar"
+                  element={<Calendar projects={projects} />}
+                />
+              </Route>
             </Routes>
           </div>
           <Outlet />

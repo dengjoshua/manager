@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { BASE_URL } from "../services/api";
+import { BASE_URL } from "../../services/api";
 import { GoogleLogin } from "@react-oauth/google";
 
 const cookies = new Cookies();

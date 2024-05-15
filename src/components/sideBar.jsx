@@ -31,7 +31,7 @@ const Sidebar = ({ user }) => {
   const location = useLocation();
 
   return (
-    <div className="w-60 fixed overflow-hidden bg-gray-100 h-screen">
+    <div className="w-60 fixed overflow-hidden border-r border-gray-300 bg-gray-100 flex flex-col h-screen">
       <div className="h-32 p-3">
         <h1 className="text-xl flex font-bold">
           <p className="text-orange-500">Task</p>Mate
@@ -88,7 +88,7 @@ const Sidebar = ({ user }) => {
           </ul>
         </div>
       </div>
-      <div className="bottom">
+      <div className="mt-auto">
         <Logout />
       </div>
     </div>

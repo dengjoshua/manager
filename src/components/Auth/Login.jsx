@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { BASE_URL } from "../services/api";
+import { BASE_URL } from "../../services/api";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
@@ -16,7 +16,7 @@ const Login = () => {
   const loginRequest = async (e) => {
     e.preventDefault();
     await axios
-      .post(`${BASE_URL}/auth_token`, { email, password })
+      .post(`${BASE_URL}/login/normal`, { email, password })
       .then((res) => {
         const data = res.data;
         if (data["status_code"] === 200) {
