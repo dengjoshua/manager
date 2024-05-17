@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { DatePicker } from "./DatePicker";
+import { DatePicker } from "./common/DatePicker";
 
 export function ProjectForm({
   handleCreateProject,

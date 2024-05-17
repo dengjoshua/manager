@@ -71,10 +71,10 @@ const Sidebar = ({ user }) => {
                 <p className="ml-3">{item.name}</p>
               </NavLink>
             ))}
-            <NavLink to="/employees">
+            <NavLink to="/assignees">
               <li
                 className={`flex items-center rounded-lg px-3 py-2 ${
-                  location.pathname === "/employees"
+                  location.pathname === "/assignees"
                     ? "bg-orange-400 text-white mr-2"
                     : ""
                 }`}
@@ -82,7 +82,7 @@ const Sidebar = ({ user }) => {
                 <span className="">
                   <FaUsersCog size={20} />
                 </span>
-                <p className="ml-3">Employees</p>
+                <p className="ml-3">Assignees</p>
               </li>
             </NavLink>
           </ul>

@@ -7,9 +7,11 @@ function Task({ task, editTask, deleteTask, projectId }) {
     return localStorage.setItem("currentTask", JSON.stringify(task));
   };
 
+  const tag = task.tag;
+
   return (
     <li
-      className="flex p-3 rounded-lg flex flex-col items-start mb-4 border-b-2 "
+      className="flex p-3 rounded-lg flex flex-col items-start mb-4 border-b-2 cursor-pointer"
       onClick={() => setCurrentTask()}
     >
       <div className="flex justify-between w-full content-center">
@@ -20,6 +22,9 @@ function Task({ task, editTask, deleteTask, projectId }) {
         <div className="flex flex-col gap-1">
           <span className="text-title overflow-auto">{task.name}</span>
           <p className="text-gray-500 mb-1">{task.description}</p>
+        </div>
+        <div className="flex flex-end w-full">
+          <p className="bg-gray-300 rounded p-1">{tag.name}</p>
         </div>
       </div>
     </li>

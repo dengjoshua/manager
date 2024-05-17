@@ -10,6 +10,7 @@ import Cookies from "universal-cookie";
 import { BASE_URL } from "../services/api";
 import axios from "axios";
 import ProtectedRoute from "./ProtectedRoute";
+import Assignees from "./Assignees";
 
 const cookies = new Cookies();
 
@@ -93,6 +94,7 @@ function Container() {
                   path="/calendar"
                   element={<Calendar projects={projects} />}
                 />
+                <Route path="/assignees" element={<Assignees />} />
               </Route>
             </Routes>
           </div>

@@ -51,7 +51,12 @@ function TaskList({ projects }) {
               <p>Select a task to view it in detail.</p>
             ) : (
               <div>
-                <input type="text" name="name" value={currentTask.name} />
+                <input
+                  type="text"
+                  name="name"
+                  value={currentTask.name}
+                  onChange={() => console.log("works")}
+                />
                 <p className="text-gray-500">{currentTask.description}</p>
               </div>
             )}
