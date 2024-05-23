@@ -5,7 +5,7 @@ import { format } from "date-fns";
 
 function Assignees(props) {
   const [modalOpen, setOpenModal] = useState(false);
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
   const [DOB, setDOB] = useState("");
@@ -13,7 +13,7 @@ function Assignees(props) {
   const formattedDOB = DOB ? format(DOB, "yyyy-MM-dd") : "";
 
   const createAssignee = () => {
-    console.log(gender, email, username, formattedDOB);
+    console.log(gender, email, name, formattedDOB);
   };
 
   const closeModal = () => {
@@ -34,11 +34,11 @@ function Assignees(props) {
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white w-2/5 rounded ">
               <AssigneeForm
-                username={username}
+                name={name}
                 email={email}
                 closeModal={closeModal}
                 gender={gender}
-                setUsername={setUsername}
+                setName={setName}
                 setGender={setGender}
                 createAssignee={createAssignee}
                 setEmail={setEmail}

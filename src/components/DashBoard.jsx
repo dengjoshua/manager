@@ -38,12 +38,12 @@ const Dashboard = () => {
 
     await axios
       .post(
-        `${BASE_URL}/create_project`,
+        `${BASE_URL}/create_project/ai`,
         {
           name: projectName,
           description,
-          start_date: formattedStartDate,
-          end_date: formattedEndDate,
+          date_start: formattedStartDate,
+          date_end: formattedEndDate,
           priority,
         },
         {
@@ -52,17 +52,16 @@ const Dashboard = () => {
           },
         }
       )
-      .then(() => {
-        fetchAllProjects();
+      .then((res) => {
+        setProjects(res.data);
+        // setProjectName("");
+        // setDescription("");
+        // setStartDate(null);
+        // setEndDate(null);
+        // setPriority("");
+        // setIsModalOpen(false);
       })
       .catch((err) => console.log(err));
-
-    setProjectName("");
-    setDescription("");
-    setStartDate(null);
-    setEndDate(null);
-    setPriority("");
-    setIsModalOpen(false);
   };
 
   const fetchAllProjects = async () => {

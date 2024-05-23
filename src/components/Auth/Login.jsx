@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { BASE_URL } from "../../services/api";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
 const cookies = new Cookies();
@@ -41,7 +41,8 @@ const Login = () => {
           localStorage.clear();
           window.location = "/dashboard";
         } else {
-          console.log("Email already in use");
+          setError(data.detail);
+          setPassword("");
         }
       })
       .catch((err) => console.log(err.response.data));
@@ -50,7 +51,7 @@ const Login = () => {
   return (
     <div className="h-screen w-full flex bg-gray-200">
       <div className="flex self-center justify-center px-5 sm:w-3/4 sm:mx-auto  md:p-0 lg:form w-full lg:w-1/2">
-        <form className="flex flex-col self-center md:w-1/2 w-full lg:auth-form">
+        <form className="flex flex-col self-center md:w-1/2 w-full">
           <label className="text-sm sm:text-base">Enter Email:</label>
           <input
             type="text"
@@ -100,7 +101,11 @@ const Login = () => {
               sign up?
             </Link>
           </p>
-          <p>OR</p>
+          <div className="flex ">
+            <div className="h-2"></div>
+            <p>OR</p>
+            <div className="h-2"></div>
+          </div>
           <GoogleLogin
             onSuccess={(credentialResponse) =>
               handleGoogleLogin(credentialResponse.credential)
@@ -108,6 +113,7 @@ const Login = () => {
             onError={() => {
               console.log("Login Failed");
             }}
+            style={{ width: "100%" }}
           />
         </form>
       </div>

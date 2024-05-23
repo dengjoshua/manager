@@ -8,7 +8,7 @@ import { GoogleLogin } from "@react-oauth/google";
 const cookies = new Cookies();
 
 const SignUp = () => {
-  const initialValues = { username: "", password: "", email: "" };
+  const initialValues = { name: "", password: "", email: "" };
   const [formValues, setFormValues] = useState(initialValues);
 
   const [error, setError] = useState();
@@ -22,23 +22,22 @@ const SignUp = () => {
     e.preventDefault();
 
     await axios
-      .post(`${BASE_URL}/signup`, {
+      .post(`${BASE_URL}/signup/normal`, {
         email: formValues.email,
         password: formValues.password,
-        username: formValues.username,
+        name: formValues.name,
       })
       .then((res) => {
         const data = res.data;
         if (data.status_code === 200) {
           cookies.set("auth_token", data["auth_token"]);
-          window.location = "login";
+          window.location = "/dashboard";
         } else {
           setError(data.detail);
+          setFormValues(initialValues);
         }
       })
       .catch((err) => setError(err.data));
-
-    setFormValues(initialValues);
   };
 
   const handleGoogleLogin = async (token) => {
@@ -73,13 +72,13 @@ const SignUp = () => {
             }`}
           />
 
-          <label className="text-sm sm:text-base">Enter Username:</label>
+          <label className="text-sm sm:text-base">Enter Name:</label>
           <input
             type="text"
-            placeholder="Enter your username...."
+            placeholder="Enter your name...."
             onChange={handleChange}
-            value={formValues.username}
-            name="username"
+            value={formValues.name}
+            name="name"
             className={`h-10 text-sm mb-2 mt-1 sm:text-base p-2 rounded w-full focus:h-10 ${
               error ? "active outline outline-red-500" : "outline-none"
             }`}

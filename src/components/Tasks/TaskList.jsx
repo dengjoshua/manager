@@ -43,7 +43,10 @@ function TaskList({ projects }) {
               />
             </div>
             <div className="flex flex-row">
-              <Tasks project={selectedProject} />
+              <Tasks
+                project={selectedProject}
+                setSelectedTask={setSelectedTask}
+              />
             </div>
           </div>
           <div className="w-2/5 bg-gray-100 p-4 h-screen overflow-y-auto">

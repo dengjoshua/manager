@@ -6,7 +6,7 @@ import axios from "axios";
 const cookies = new Cookies();
 
 import Task from "./Task";
-const Tasks = ({ project }) => {
+const Tasks = ({ project, setSelectedTask }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [modalOpen, setOpenModal] = useState(false);
@@ -17,16 +17,37 @@ const Tasks = ({ project }) => {
     setOpenModal(false);
   };
 
-  const handleDeleteTask = async (task_id, projectId) => {
+  const handleDeleteTask = async (task_id) => {
     const cookie = cookies.get("auth_token");
 
     await axios
-      .delete(`${BASE_URL}/delete_task/${projectId}/${task_id}`, {
+      .delete(`${BASE_URL}/delete_task/${task_id}`, {
         headers: {
           Authorization: `Bearer ${cookie}`,
         },
       })
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        localStorage.setItem("currentProject", JSON.stringify(res.data));
+        localStorage.removeItem("currentTask");
+        setSelectedTask("");
+      });
+  };
+
+  const handleEditTask = async (task_id) => {
+    const cookie = cookies.get("auth_token");
+
+    await axios
+      .put(`${BASE_URL}/delete_task/${task_id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie}`,
+        },
+      })
+      .then((res) => {
+        localStorage.setItem("currentProject", JSON.stringify(res.data));
+        localStorage.removeItem("currentTask");
+        setSelectedTask("");
+        window.location = "/task_list";
+      });
   };
 
   return (
@@ -51,11 +72,11 @@ const Tasks = ({ project }) => {
               <ul className="w-full">
                 {project.tasks.map((task) => (
                   <Task
-                    key={task.task_id}
+                    key={task.id}
                     task={task}
                     editTask={() => console.log("works2")}
                     deleteTask={handleDeleteTask}
-                    projectId={project.project_id}
+                    projectId={project.id}
                   />
                 ))}
               </ul>

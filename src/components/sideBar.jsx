@@ -43,7 +43,7 @@ const Sidebar = ({ user }) => {
           <FaUserCircle size={28} className="text-orange-700 mr-3" />
           <section>
             <h2 className="text-sm flex items-center font-bold-400">
-              {user.username}
+              {user.name}
               <FaAngleDown className="ml-1" />
             </h2>
             <p className="text-xs font-light text-gray-600">{user.email}</p>

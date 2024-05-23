@@ -20,9 +20,9 @@ import { Button } from "../ui/button";
 import { DatePicker } from "./DatePicker";
 
 function AssigneeForm({
-  username,
+  name,
   closeModal,
-  setUsername,
+  setName,
   email,
   gender,
   setGender,
@@ -49,12 +49,12 @@ function AssigneeForm({
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Username</Label>
+              <Label htmlFor="framework">Name</Label>
               <Input
-                placeholder="Username"
+                placeholder="Name"
                 id="description"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="flex flex-col w-1/2 space-y-1.5">

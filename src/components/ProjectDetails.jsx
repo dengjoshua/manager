@@ -15,6 +15,10 @@ function ProjectDetails({ project }) {
     tag: { name: "", color: "" },
   });
 
+  const formatDate = (date) => {
+    return format(date, "PPP");
+  };
+
   const projectId = localStorage.getItem("currentProjectId");
 
   const openModal = () => setIsModalOpen(true);
@@ -34,16 +38,15 @@ function ProjectDetails({ project }) {
   const createTask = async () => {
     const cookie = cookies.get("auth_token");
 
-    console.log(newTask);
-
     await axios
-      .put(
+      .post(
         `${BASE_URL}/create_task/${projectId}`,
         {
           name: newTask.name,
           date: newTask.date,
           description: newTask.description,
-          tag: newTask.tag,
+          tag_name: newTask.tag.name,
+          tag_color: newTask.tag.color,
         },
         {
           headers: {
@@ -52,7 +55,7 @@ function ProjectDetails({ project }) {
         }
       )
       .then((res) => {
-        console.log("successful.");
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
 
@@ -79,7 +82,7 @@ function ProjectDetails({ project }) {
                 <th className="text-left font-normal text-gray-500">
                   Date Due
                 </th>
-                <td>{format(new Date(project.date_end), "dd MMM yyyy")}</td>
+                <td>{formatDate(project.date_end)}</td>
               </tr>
               <tr className="text-sm">
                 <th className="text-left font-normal text-gray-500">Tags</th>

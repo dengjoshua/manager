@@ -16,7 +16,7 @@ function Task({ task, editTask, deleteTask, projectId }) {
     >
       <div className="flex justify-between w-full content-center">
         <Checkbox className="accent-green-400" />
-        <MdDelete onClick={() => deleteTask(task.task_id, projectId)} />
+        <MdDelete onClick={() => deleteTask(task.id, projectId)} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex flex-col gap-1">
@@ -24,7 +24,7 @@ function Task({ task, editTask, deleteTask, projectId }) {
           <p className="text-gray-500 mb-1">{task.description}</p>
         </div>
         <div className="flex flex-end w-full">
-          <p className="bg-gray-300 rounded p-1">{tag.name}</p>
+          <p className="bg-gray-300 rounded p-1">{tag ? tag.name : ""}</p>
         </div>
       </div>
     </li>

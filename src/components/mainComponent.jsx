@@ -10,11 +10,7 @@ const cookies = new Cookies();
 
 const MainComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [project, setProject] = useState({
-    assignees: [],
-    tags: [],
-    tasks: [],
-  });
+  const [project, setProject] = useState({});
 
   const projectId = localStorage.getItem("currentProjectId");
 

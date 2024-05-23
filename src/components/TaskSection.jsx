@@ -3,9 +3,12 @@ import { FaEllipsisH, FaPlusSquare, FaStar } from "react-icons/fa";
 import { BsArrowUpRightCircle } from "react-icons/bs";
 import { format, isToday, isBefore } from "date-fns";
 
+const formatDate = (date) => {
+  return format(date, "PPP");
+};
+
 function TaskSection({ tasks }) {
   const randomNumber = Math.floor(Math.random() * 1000) + 1;
-  const imageUrl = `https://source.unsplash.com/user/erondu/100x100?${randomNumber}`;
   const today = new Date();
 
   const todayTasks = tasks.filter((task) => isToday(new Date(task.date || "")));
@@ -40,7 +43,7 @@ function TaskColumn({ tasks, title }) {
       </div>
       {tasks.map((task) => (
         <div
-          key={task.task_id}
+          key={task.id}
           className={`rounded-lg h-32 flex flex-col w-full p-2 my-2 rounded-lg ${
             task.tag ? task.tag.color : ""
           }`}
@@ -48,9 +51,7 @@ function TaskColumn({ tasks, title }) {
           <div className="flex justify-between">
             <span className="text-xs flex">
               <FaStar className="mr-1" />
-              {task.date
-                ? format(new Date(task.date), "dd MMM yyyy")
-                : "No date"}
+              {task.date ? formatDate(task.date) : "No date"}
             </span>
             <BsArrowUpRightCircle color="red" size={14} />
           </div>

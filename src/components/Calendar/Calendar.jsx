@@ -86,7 +86,7 @@ function Calendar({ projects }) {
             >
               <span className="date text-sm font-bold">{day.name}</span>
               {day.tasks.map((task, index) => (
-                <div key={task.task_id} className="todo p-1 mt-1">
+                <div key={task.id} className="todo p-1 mt-1">
                   <div>{task.name}</div>
                 </div>
               ))}
