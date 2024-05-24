@@ -45,7 +45,7 @@ const Login = () => {
           setPassword("");
         }
       })
-      .catch((err) => console.log(err.response.data));
+      .catch((err) => console.log(err));
   };
 
   return (

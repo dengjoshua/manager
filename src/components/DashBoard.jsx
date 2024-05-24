@@ -54,12 +54,12 @@ const Dashboard = () => {
       )
       .then((res) => {
         setProjects(res.data);
-        // setProjectName("");
-        // setDescription("");
-        // setStartDate(null);
-        // setEndDate(null);
-        // setPriority("");
-        // setIsModalOpen(false);
+        setProjectName("");
+        setDescription("");
+        setStartDate(null);
+        setEndDate(null);
+        setPriority("");
+        setIsModalOpen(false);
       })
       .catch((err) => console.log(err));
   };

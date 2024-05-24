@@ -41,6 +41,8 @@ function Container() {
 
   const fetchUserDetails = async () => {
     const cookie = cookies.get("auth_token");
+    console.log(cookie);
+
     try {
       const response = await axios.get(`${BASE_URL}/user_details`, {
         headers: {
