@@ -73,8 +73,9 @@ function Container() {
   return (
     <React.Fragment>
       {isLoading ? (
-        <div>
-          <h1>App loading</h1>
+        <div className="flex items-center justify-center h-screen">
+          <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
+          <div className="ml-4 text-xl">Loading...</div>
         </div>
       ) : (
         <div className="flex">

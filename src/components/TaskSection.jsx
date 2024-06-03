@@ -4,11 +4,10 @@ import { BsArrowUpRightCircle } from "react-icons/bs";
 import { format, isToday, isBefore } from "date-fns";
 
 const formatDate = (date) => {
-  return format(date, "PPP");
+  return format(new Date(date), "PPP");
 };
 
 function TaskSection({ tasks }) {
-  const randomNumber = Math.floor(Math.random() * 1000) + 1;
   const today = new Date();
 
   const todayTasks = tasks.filter((task) => isToday(new Date(task.date || "")));
@@ -19,14 +18,11 @@ function TaskSection({ tasks }) {
   const completedTasks = tasks.filter((task) => task.finished);
 
   return (
-    <div className="grid grid-cols-5 bg-gray-100 p-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-gray-100 p-4 gap-6">
       <TaskColumn tasks={todayTasks} title="Today" />
-      <TaskColumn tasks={inProgressTasks} title="Inprogress" />
+      <TaskColumn tasks={inProgressTasks} title="In Progress" />
       <TaskColumn tasks={completedTasks} title="Completed" />
       <TaskColumn tasks={overdueTasks} title="Overdue" />
-      <div>
-        <h1>Others</h1>
-      </div>
     </div>
   );
 }
@@ -34,30 +30,34 @@ function TaskSection({ tasks }) {
 function TaskColumn({ tasks, title }) {
   return (
     <div>
-      <div className="bg-white box items-center p-2 text-sm text-gray-800 align-center flex justify-between rounded-lg mb-2">
-        <h1>{title}</h1>
-        <span className="flex">
-          <FaEllipsisH className="text-sm mr-2 text-gray-800" />
-          <FaPlusSquare className="text-md rounded-md text-gray-800" />
+      <div className="bg-white box items-center p-3 text-sm text-gray-800 align-center flex justify-between rounded-lg mb-4 shadow">
+        <h1 className="font-semibold">{title}</h1>
+        <span className="flex items-center">
+          <FaEllipsisH className="text-sm mr-2 text-gray-800 cursor-pointer" />
+          <FaPlusSquare className="text-md rounded-md text-gray-800 cursor-pointer" />
         </span>
       </div>
-      {tasks.map((task) => (
-        <div
-          key={task.id}
-          className={`rounded-lg h-32 flex flex-col w-full p-2 my-2 rounded-lg ${
-            task.tag ? task.tag.color : ""
-          }`}
-        >
-          <div className="flex justify-between">
-            <span className="text-xs flex">
-              <FaStar className="mr-1" />
-              {task.date ? formatDate(task.date) : "No date"}
-            </span>
-            <BsArrowUpRightCircle color="red" size={14} />
+      {tasks.length > 0 ? (
+        tasks.map((task) => (
+          <div
+            key={task.id}
+            className={`rounded-lg flex flex-col w-full p-3 my-2 shadow ${
+              task.tag ? task.tag.color : "bg-gray-50"
+            }`}
+          >
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-xs flex items-center text-gray-600">
+                <FaStar className="mr-1 text-yellow-500" />
+                {task.date ? formatDate(task.date) : "No date"}
+              </span>
+              <BsArrowUpRightCircle className="text-red-500" size={16} />
+            </div>
+            <h1 className="text-lg font-semibold text-gray-800">{task.name}</h1>
           </div>
-          <h1 className="text-lg m-2">{task.name}</h1>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p className="text-sm text-gray-500">No tasks available</p>
+      )}
     </div>
   );
 }

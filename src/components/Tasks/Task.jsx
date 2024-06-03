@@ -11,21 +11,34 @@ function Task({ task, editTask, deleteTask, projectId }) {
 
   return (
     <li
-      className="flex p-3 rounded-lg flex flex-col items-start mb-4 border-b-2 cursor-pointer"
+      className="flex flex-col p-4 rounded-lg mb-4 border border-gray-200 bg-white shadow hover:shadow-lg transition-shadow cursor-pointer"
       onClick={() => setCurrentTask()}
     >
-      <div className="flex justify-between w-full content-center">
-        <Checkbox className="accent-green-400" />
-        <MdDelete onClick={() => deleteTask(task.id, projectId)} />
+      <div className="flex justify-between items-center mb-2">
+        <Checkbox className="form-checkbox h-5 w-5 text-green-500 hover:text-green-600 transition-colors" />
+        <MdDelete
+          className="text-red-500 hover:text-red-700 transition-colors cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteTask(task.id, projectId);
+          }}
+          size={24}
+        />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex flex-col gap-1">
-          <span className="text-title overflow-auto">{task.name}</span>
-          <p className="text-gray-500 mb-1">{task.description}</p>
+        <div className="flex flex-col gap-1 mb-2">
+          <span className="text-lg font-semibold text-gray-800 overflow-auto">
+            {task.name}
+          </span>
+          <p className="text-gray-600">{task.description}</p>
         </div>
-        <div className="flex flex-end w-full">
-          <p className="bg-gray-300 rounded p-1">{tag ? tag.name : ""}</p>
-        </div>
+        {tag && (
+          <div className="mt-2">
+            <p className="inline-block bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-sm">
+              {tag.name}
+            </p>
+          </div>
+        )}
       </div>
     </li>
   );

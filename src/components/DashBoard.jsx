@@ -36,8 +36,8 @@ const Dashboard = () => {
 
     const cookie = cookies.get("auth_token");
 
-    await axios
-      .post(
+    try {
+      const response = await axios.post(
         `${BASE_URL}/create_project/ai`,
         {
           name: projectName,
@@ -51,30 +51,32 @@ const Dashboard = () => {
             Authorization: `Bearer ${cookie}`,
           },
         }
-      )
-      .then((res) => {
-        setProjects(res.data);
-        setProjectName("");
-        setDescription("");
-        setStartDate(null);
-        setEndDate(null);
-        setPriority("");
-        setIsModalOpen(false);
-      })
-      .catch((err) => console.log(err));
+      );
+      setProjects(response.data);
+      setProjectName("");
+      setDescription("");
+      setStartDate(null);
+      setEndDate(null);
+      setPriority("");
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const fetchAllProjects = async () => {
     const cookie = cookies.get("auth_token");
 
-    await axios
-      .get(`${BASE_URL}/get_projects`, {
+    try {
+      const response = await axios.get(`${BASE_URL}/get_projects`, {
         headers: {
           Authorization: `Bearer ${cookie}`,
         },
-      })
-      .then((res) => setProjects(res.data))
-      .catch((err) => console.log(err));
+      });
+      setProjects(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -84,24 +86,26 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Projects Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6">Projects Dashboard</h1>
       {isLoading ? (
         <p>Loading projects...</p>
       ) : (
         <div>
-          <p>
-            {projects.length == 0
-              ? "You current have no ongoing projects."
+          <p className="mb-4">
+            {projects.length === 0
+              ? "You currently have no ongoing projects."
               : `You currently have ${projects.length} ongoing projects.`}
           </p>
           <div
-            className="bg-white h-40 m-2 w-32 p-2 hover:pointer justify-center flex flex-col"
+            className="bg-white h-40 m-2 w-32 p-4 hover:pointer justify-center flex flex-col items-center border-2 border-dashed border-orange-400 cursor-pointer"
             onClick={() => setIsModalOpen(true)}
           >
-            <FaPlusCircle size={24} color="orange" className="mx-auto" />
-            <p className="mx-auto">Create Project</p>
+            <FaPlusCircle size={36} color="orange" />
+            <p className="mt-2 text-center text-orange-600 font-semibold">
+              Create Project
+            </p>
           </div>
-          <div className="flex gap-4 ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mt-6">
             {projects &&
               projects.map((project, index) => (
                 <ProjectCard
@@ -116,7 +120,7 @@ const Dashboard = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded ">
+          <div className=" rounded-lg p-6 w-full max-w-md">
             <ProjectForm
               setDescription={setDescription}
               setEndDate={setEndDate}

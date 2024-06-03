@@ -6,6 +6,7 @@ import Cookies from "universal-cookie";
 import { BASE_URL } from "../services/api";
 
 const cookies = new Cookies();
+
 function ProjectDetails({ project }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -15,9 +16,7 @@ function ProjectDetails({ project }) {
     tag: { name: "", color: "" },
   });
 
-  const formatDate = (date) => {
-    return format(date, "PPP");
-  };
+  const formatDate = (date) => format(new Date(date), "PPP");
 
   const projectId = localStorage.getItem("currentProjectId");
 
@@ -38,8 +37,8 @@ function ProjectDetails({ project }) {
   const createTask = async () => {
     const cookie = cookies.get("auth_token");
 
-    await axios
-      .post(
+    try {
+      const response = await axios.post(
         `${BASE_URL}/create_task/${projectId}`,
         {
           name: newTask.name,
@@ -53,22 +52,22 @@ function ProjectDetails({ project }) {
             Authorization: `Bearer ${cookie}`,
           },
         }
-      )
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
 
     closeModal();
   };
 
   return (
-    <div className="flex flex-col p-4">
-      <div className="flex justify-between">
+    <div className="flex flex-col p-6 bg-white rounded-lg shadow-lg">
+      <div className="flex justify-between items-center mb-4">
         <div className="w-1/2">
           <table className="table-auto border-separate border-spacing-2 w-full">
             <tbody>
-              <tr className="py-6 text-sm">
+              <tr className="text-sm">
                 <th className="text-left font-normal text-gray-500">
                   Priority
                 </th>
@@ -87,11 +86,11 @@ function ProjectDetails({ project }) {
               <tr className="text-sm">
                 <th className="text-left font-normal text-gray-500">Tags</th>
                 <td>
-                  <div className="flex">
+                  <div className="flex flex-wrap">
                     {project.tags.map((tag, index) => (
                       <div
                         key={index}
-                        className={`border mr-2 justify-center ${tag.color} rounded-lg border-gray-200 p-1`}
+                        className={`border mr-2 mb-2 px-2 py-1 justify-center ${tag.color} rounded-lg border-gray-200`}
                       >
                         {tag.name}
                       </div>
@@ -102,19 +101,39 @@ function ProjectDetails({ project }) {
             </tbody>
           </table>
         </div>
-        <div className="flex h-8 items-center rounded-lg border-gray-300 border bg-white p-2">
+        <div className="flex items-center rounded-lg border-gray-300 border bg-white p-2">
           <input
             type="text"
             name="search"
-            className="outline-none text-sm"
+            className="outline-none text-sm w-full"
             placeholder="Search for task..."
           />
-          <FaSearch className="text-md text-gray-400" />
+          <FaSearch className="text-md text-gray-400 ml-2" />
         </div>
       </div>
+
+      <div className="flex justify-between items-center mb-4">
+        <button
+          className="flex items-center p-2 bg-orange-400 rounded-md text-white text-sm hover:bg-orange-500"
+          onClick={openModal}
+        >
+          New Task <FaAngleDown className="ml-2" />
+        </button>
+        <ul className="flex space-x-2">
+          {["Filter", "Sort", "Label", "Category"].map((item, index) => (
+            <li
+              key={index}
+              className="flex items-center border justify-center bg-slate-100 text-xs rounded-lg border-gray-200 px-3 py-2 hover:bg-slate-200 cursor-pointer"
+            >
+              {item} <FaAngleDown className="ml-1 text-xs" />
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg w-1/2 shadow-lg">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
             <h2 className="text-xl font-bold mb-4">Create New Task</h2>
             <input
               type="text"
@@ -161,7 +180,7 @@ function ProjectDetails({ project }) {
                 Cancel
               </button>
               <button
-                onClick={() => createTask()}
+                onClick={createTask}
                 className="py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600"
               >
                 Save Task
@@ -170,24 +189,6 @@ function ProjectDetails({ project }) {
           </div>
         </div>
       )}
-      <div className="flex justify-between my-4">
-        <button
-          className="flex p-2 bg-orange-400 rounded-md text-white text-sm"
-          onClick={openModal}
-        >
-          New Task <FaAngleDown className="my-auto ml-2" />
-        </button>
-        <ul className="flex">
-          {["Filter", "Sort", "Label", "Category"].map((item, index) => (
-            <li
-              key={index}
-              className="flex border mr-1 justify-center bg-slate-100 text-xs rounded-lg border-gray-200 px-1 py-2"
-            >
-              {item} <FaAngleDown className="ml-1 my-auto text-xs" />
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

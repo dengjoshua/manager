@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tasks from "./Tasks";
 import { SelectForm } from "../common/SelectForm";
+import TaskDetail from "./TaskDetail";
 
 function TaskList({ projects }) {
   const [selectedProject, setSelectedProject] = useState("");
@@ -49,21 +50,7 @@ function TaskList({ projects }) {
               />
             </div>
           </div>
-          <div className="w-2/5 bg-gray-100 p-4 h-screen overflow-y-auto">
-            {!currentTask ? (
-              <p>Select a task to view it in detail.</p>
-            ) : (
-              <div>
-                <input
-                  type="text"
-                  name="name"
-                  value={currentTask.name}
-                  onChange={() => console.log("works")}
-                />
-                <p className="text-gray-500">{currentTask.description}</p>
-              </div>
-            )}
-          </div>
+          <TaskDetail currentTask={currentTask} />
         </div>
       )}
     </React.Fragment>

@@ -92,7 +92,11 @@ export function ProjectForm({
         </form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={closeModal}>
+        <Button
+          variant="outline"
+          className="bg-red-600 text-white"
+          onClick={closeModal}
+        >
           Cancel
         </Button>
         <Button

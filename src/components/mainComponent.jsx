@@ -44,7 +44,10 @@ const MainComponent = () => {
   return (
     <div className="flex-grow bg-white">
       {isLoading ? (
-        <p>Loading...</p>
+        <div className="flex items-center flex-col justify-center h-screen">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500"></div>
+          <div className="mt-4 text-md">Loading...</div>
+        </div>
       ) : (
         <div>
           <Banner project={project} />
