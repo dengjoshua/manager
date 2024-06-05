@@ -2,7 +2,7 @@ import React from "react";
 import { MdDelete } from "react-icons/md";
 import { Checkbox } from "../ui/checkbox";
 
-function Task({ task, editTask, deleteTask, projectId }) {
+function Task({ task, editTask, deleteTask, projectId, setSelectedTask }) {
   const setCurrentTask = () => {
     return localStorage.setItem("currentTask", JSON.stringify(task));
   };
@@ -12,7 +12,7 @@ function Task({ task, editTask, deleteTask, projectId }) {
   return (
     <li
       className="flex flex-col p-4 rounded-lg mb-4 border border-gray-200 bg-white shadow hover:shadow-lg transition-shadow cursor-pointer"
-      onClick={() => setCurrentTask()}
+      onClick={() => setSelectedTask(task)}
     >
       <div className="flex justify-between items-center mb-2">
         <Checkbox className="form-checkbox h-5 w-5 text-green-500 hover:text-green-600 transition-colors" />

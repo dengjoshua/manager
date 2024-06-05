@@ -11,6 +11,7 @@ import { BASE_URL } from "../services/api";
 import axios from "axios";
 import ProtectedRoute from "./ProtectedRoute";
 import Assignees from "./Assignees";
+import LoadingDots from "./common/LoadingDots";
 
 const cookies = new Cookies();
 
@@ -73,9 +74,8 @@ function Container() {
   return (
     <React.Fragment>
       {isLoading ? (
-        <div className="flex items-center justify-center h-screen">
-          <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
-          <div className="ml-4 text-xl">Loading...</div>
+        <div className="fixed inset-0 bg-gray-100 bg-opacity-50 flex justify-center items-center">
+          <LoadingDots />
         </div>
       ) : (
         <div className="flex">
@@ -90,7 +90,12 @@ function Container() {
                 />
                 <Route
                   path="/task_list"
-                  element={<TaskList projects={projects} />}
+                  element={
+                    <TaskList
+                      projects={projects}
+                      fetchAllProjects={fetchAllProjects}
+                    />
+                  }
                 />
                 <Route path="/settings" element={<Settings />} />
                 <Route

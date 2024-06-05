@@ -80,6 +80,7 @@ const Tasks = ({ project, setSelectedTask }) => {
                     editTask={() => handleEditTask(task.id)}
                     deleteTask={() => handleDeleteTask(task.id)}
                     projectId={project.id}
+                    setSelectedTask={setSelectedTask}
                   />
                 ))}
               </ul>

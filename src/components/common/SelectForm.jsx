@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Select,
   SelectContent,
@@ -10,19 +9,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function SelectForm({
-  options,
-  label,
-  handleSelectOption,
-  defaultValue,
-}) {
+export function SelectForm({ options, label, handleSelectOption, value }) {
   return (
-    <Select onValueChange={(e) => handleSelectOption(e)}>
+    <Select onValueChange={(e) => handleSelectOption(e)} value={value}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue
-          placeholder="Select an option"
-          defaultValue={defaultValue}
-        />
+        <SelectValue placeholder="Select an option">
+          {value || "Select an option"}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

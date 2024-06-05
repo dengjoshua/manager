@@ -9,6 +9,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import { ProjectForm } from "./createProject";
 import ProjectCard from "./ProjectCard";
+import LoadingDots from "./common/LoadingDots";
 
 const cookies = new Cookies();
 
@@ -21,6 +22,7 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState(null);
   const [priority, setPriority] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -37,6 +39,9 @@ const Dashboard = () => {
     const cookie = cookies.get("auth_token");
 
     try {
+      setIsCreating(true);
+      setIsModalOpen(false);
+
       const response = await axios.post(
         `${BASE_URL}/create_project/ai`,
         {
@@ -58,9 +63,10 @@ const Dashboard = () => {
       setStartDate(null);
       setEndDate(null);
       setPriority("");
-      setIsModalOpen(false);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -120,7 +126,7 @@ const Dashboard = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className=" rounded-lg p-6 w-full max-w-md">
+          <div className="rounded-lg p-6 w-full max-w-md">
             <ProjectForm
               setDescription={setDescription}
               setEndDate={setEndDate}
@@ -135,6 +141,12 @@ const Dashboard = () => {
               closeModal={closeModal}
             />
           </div>
+        </div>
+      )}
+
+      {isCreating && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <LoadingDots />
         </div>
       )}
     </div>

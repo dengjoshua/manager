@@ -5,6 +5,7 @@ import TaskSection from "./TaskSection";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import { BASE_URL } from "../services/api";
+import LoadingDots from "./common/LoadingDots";
 
 const cookies = new Cookies();
 
@@ -44,9 +45,8 @@ const MainComponent = () => {
   return (
     <div className="flex-grow bg-white">
       {isLoading ? (
-        <div className="flex items-center flex-col justify-center h-screen">
-          <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500"></div>
-          <div className="mt-4 text-md">Loading...</div>
+        <div className="fixed inset-0 bg-white ml-60 flex justify-center items-center">
+          <LoadingDots />
         </div>
       ) : (
         <div>
